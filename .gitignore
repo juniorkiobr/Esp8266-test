@@ -1,0 +1,12 @@
+drivers/
+hardware/
+examples/
+java/
+lib/
+tools/
+tools-builder/
+arduino*
+lib*
+msvc*
+revisions.txt
+wrapper-manifest.xml
