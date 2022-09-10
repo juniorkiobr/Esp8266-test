@@ -1,11 +1,17 @@
 #include <SocketManager.h>
 
+WebsocketsClient wsClient;
+const char *ssid = "Lilith-2G";
+const char *password = "";
+const char *websockets_server = "ws://192.168.100.132:3000/";
+
 void onMessageCallback(WebsocketsMessage message)
 {
     Serial.print("Got Message: ");
     Serial.println(message.data());
-    switch (message)
+    if (strcasecmp(message.data().c_str(), "ping") == 0)
     {
+        wsClient.send("pong");
     }
 }
 
