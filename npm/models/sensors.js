@@ -24,6 +24,6 @@ const Sensor = db.define('sensors',{
 });
 
 //Criar a tabela
-User.sync();
+Sensor.sync();
 
 module.exports = Sensor;

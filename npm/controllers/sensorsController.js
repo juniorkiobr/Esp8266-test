@@ -3,6 +3,7 @@ const app = express();
 const Sensor = require('../models/sensors');
 
 app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
 
 app.get("/", async (req, res) => {
     res.send("Página inicial - Celke");
@@ -10,12 +11,11 @@ app.get("/", async (req, res) => {
 
 app.get("/getAll", async (req, res) =>{
     const sensors = await Sensor.findAll();
-
-    await Sensor.get(res.body);
+    res.send(sensors);
 });
 
 app.put("/criarAmbiente", async (req, res) => {
-    //console.log(req.body);
+    console.log(req.body);
 
     await Sensor.create(req.body)
     .then(() => {
