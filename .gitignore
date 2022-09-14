@@ -17,9 +17,14 @@ hardware/tools/avr/*
 /lib
 /tools
 /tools-builder
-arduino*
+arduino_*.exe
+arduino_*.l4j*
+arduino-*.exe
+arduino.exe
+arduino.l4j*
 libusb0.dll
 msvc*
 revisions.txt
 wrapper-manifest.xml
+hs_err_pid*.log
 

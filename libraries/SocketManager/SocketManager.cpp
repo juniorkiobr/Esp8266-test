@@ -2,16 +2,46 @@
 
 WebsocketsClient wsClient;
 const char *ssid = "Lilith-2G";
-const char *password = "";
+const char *password = "23201709";
 const char *websockets_server = "ws://192.168.100.132:3000/";
+
+bool insensitiveCompare(const String &a, const String &b)
+{
+    if (a.length() != b.length())
+        return false;
+    for (int i = 0; i < a.length(); i++)
+    {
+        if (tolower(a[i]) != tolower(b[i]))
+            return false;
+    }
+    return true;
+}
+
+bool isSubString(const String &a, const String &b)
+{
+    if (a.length() > b.length())
+        return false;
+    for (int i = 0; i < b.length(); i++)
+    {
+        if (tolower(a[i]) != tolower(b[i]))
+            return false;
+    }
+    return true;
+}
 
 void onMessageCallback(WebsocketsMessage message)
 {
+    String dados = (message.data());
     Serial.print("Got Message: ");
-    Serial.println(message.data());
-    if (strcasecmp(message.data().c_str(), "ping") == 0)
+    Serial.println(dados);
+    if (insensitiveCompare(dados, "ping"))
     {
         wsClient.send("pong");
+    }
+    else if (isSubString(dados, "cmd_ard_uno:>"))
+    {
+        dados.replace("cmd_ard_uno:>", "");
+        // EnviaDadosArduinoHandler(dados);
     }
 }
 
@@ -37,6 +67,10 @@ void onEventsCallback(WebsocketsEvent event, String data)
 
 void ConfiguraSocketManager()
 {
+    // ConfiguraArduinoHandler();
+    Serial.begin(115200);
+    delay(10);
+
     // Connect to wifi
     WiFi.begin(ssid, password);
 
