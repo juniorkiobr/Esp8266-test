@@ -46,6 +46,7 @@ var arduinoOnMessage = function(data){
         const parsedData = JSON.parse(""+data);
         if(parsedData.status_code === 200){
           let message = ""
+          console.log(parsedData);
   
           if(parsedData.id_sensor){
             console.log("Sensor: " + parsedData.id_sensor + " - " + parsedData.value);
