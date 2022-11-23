@@ -7,7 +7,7 @@ var moment = require('moment');
 var schedules = [];
 
 app.get("/automations/getAll", async (req, res) =>{
-    const automations = await automations.findAll();
+    const automations = await Automation.findAll();
     res.send(automations);
 });
 
