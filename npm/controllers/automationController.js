@@ -73,10 +73,11 @@ app.put("/automations/criarAutomacao", async (req, res) => {
                 mensagem: "Erro: Automacao nao criada"
             });
         }
-    }).catch(() => {
+    }).catch((err) => {
         return res.status(400).json({
             erro: true,
-            mensagem: "Erro: Erro ao cadastrar!"
+            mensagem: "Erro: Erro ao cadastrar!",
+            err: err
         });
     });
 
