@@ -17,8 +17,8 @@ function programSchedule(automation){
         day: automation.dateAutomation.getDate(),
         month: automation.dateAutomation.getMonth() + 1,
 
-        hour: automation.dateAutomation.getHours(),
-        minute: automation.dateAutomation.getMinutes(),
+        hour: automation.dateAutomation.getUTCHours(),
+        minute: automation.dateAutomation.getUTCMinutes(),
     }
 
     function callbackSchedule(){
@@ -34,7 +34,7 @@ function programSchedule(automation){
         // (schedules.pop(id_schedule)).stop();
     }
 
-    let schedule  = cron.schedule('0 '+dateFormat.minute+' ' + dateFormat.hour + ' ' + dateFormat.day + ' ' + dateFormat.month + ' *', callbackSchedule, {scheduled: true, timezone: "America/Sao_Paulo"});
+    let schedule  = cron.schedule('0 '+dateFormat.minute+' ' + dateFormat.hour + ' ' + dateFormat.day + ' ' + dateFormat.month + ' *', callbackSchedule);
     // schedules.push(schedule);
 }
 
@@ -50,7 +50,7 @@ function programAutomations(){
 
 app.put("/automations/criarAutomacao", async (req, res) => {
     console.log(req.body);
-    req.body.dateAutomation = new Date(req.body.dateAutomation);
+    req.body.dateAutomation = DateTime.fromISO(req.body.dateAutomation, {zone: 'utc'}).toJSDate();
 
     await Automation.create(req.body)
     .then(() => {
