@@ -1,12 +1,12 @@
 #include <SocketManager.h>
 
 WebsocketsClient wsClient;
-const char *ssid = "Lilith-2G";
-const char *password = "23201709";
+// const char *ssid = "Lilith-2G";
+// const char *password = "23201709";
 bool hasConnectedWS = false;
 
-// const char *ssid = "Dafy";
-// const char *password = "12123434";
+const char *ssid = "Dafy";
+const char *password = "12123434";
 // String websockets_server = "ws://192.168.100.132:2053/";
 String websockets_server = "ws://20.2.68.223:2053/";
 

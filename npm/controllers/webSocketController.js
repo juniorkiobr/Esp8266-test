@@ -40,6 +40,9 @@ function sendToAllExcept(message, ws){
 var arduinoOnMessage = function(data){
     lastArduinoMessage = ""+data;
     console.log("Arduino on message: " + lastArduinoMessage);
+    if(lock_resp_arduino){
+      lock_resp_arduino = false;
+    }
 
 
     try{
@@ -64,14 +67,13 @@ var arduinoOnMessage = function(data){
             Interaction.update({valor: parsedData.value }, {where: {id: parsedData.id_interacao}});
   
           }
-          if(lock_resp_arduino){
-            lock_resp_arduino = false;
-          }
+          
         }
     } catch (e) {
       console.log("" + data)     
       
     }
+    
 
 }
 
