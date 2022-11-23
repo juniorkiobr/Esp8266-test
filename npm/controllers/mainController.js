@@ -8,7 +8,7 @@ app.get("/", async (req, res) => {
     res.send("Página inicial - Celke");
 });
 
-app.listen(2052, () => {
-    console.log("Servidor web iniciado na porta 2052: http://localhost:2052");
+app.listen(80, () => {
+    console.log("Servidor web iniciado na porta 80: http://localhost");
 });
 module.exports = app;

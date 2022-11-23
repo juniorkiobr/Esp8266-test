@@ -7,7 +7,9 @@ bool hasConnectedWS = false;
 
 // const char *ssid = "Dafy";
 // const char *password = "12123434";
-String websockets_server = "ws://192.168.100.132:2053/";
+// String websockets_server = "ws://192.168.100.132:2053/";
+String websockets_server = "ws://20.2.68.223:2053/";
+
 // const char *websockets_server = "ws://179.104.55.71:2053/";
 // String websockets_server = "ws://192.168.43.43:2053/";
 
@@ -71,6 +73,51 @@ int isSubString(const String &a, const String &b)
     return 0;
 }
 
+void ConectaWebSocket()
+{
+    if (WiFi.status() == WL_CONNECTED)
+    {
+        if (!hasConnectedWS)
+        {
+            Serial.println("Connecting to Websocket Server");
+            // Connect to server
+            while (!wsClient.connect(websockets_server))
+            {
+                Serial.println("Connection Failed! " + String(websockets_server) + " Retrying...");
+                delay(1000);
+            }
+
+            // Send a message
+            wsClient.send("ArduinoInteractionsToken123456789");
+            // Send a ping
+            wsClient.ping();
+        }
+    }
+}
+
+void ConectaSocketManager()
+{
+    // Connect to wifi
+    WiFi.begin(ssid, password);
+
+    // Wait some time to connect to wifi
+    for (int i = 0; i < 10 && WiFi.status() != WL_CONNECTED; i++)
+    {
+        Serial.print(".");
+        delay(1000);
+    }
+
+    if (WiFi.status() != WL_CONNECTED)
+    {
+        Serial.println("Failed to connect to wifi");
+        return;
+    }
+    else
+    {
+        Serial.println("Connected to wifi");
+    }
+}
+
 void callCommand(String command)
 {
     if (strstr(command.c_str(), "readSensor:") != NULL)
@@ -128,6 +175,7 @@ void onEventsCallback(WebsocketsEvent event, String data)
     {
         Serial.println("Connnection Closed");
         hasConnectedWS = false;
+        ConectaWebSocket();
     }
     else if (event == WebsocketsEvent::GotPing)
     {
@@ -155,38 +203,5 @@ void ConfiguraSocketManager()
     wsClient.onMessage(onMessageCallback);
     wsClient.onEvent(onEventsCallback);
 
-    // Connect to server
-    while (!wsClient.connect(websockets_server))
-    {
-        Serial.println("Connection Failed! " + String(websockets_server) + " Retrying...");
-        delay(1000);
-    }
-
-    // Send a message
-    wsClient.send("ArduinoInteractionsToken123456789");
-    // Send a ping
-    wsClient.ping();
-}
-
-void ConectaSocketManager()
-{
-    // Connect to wifi
-    WiFi.begin(ssid, password);
-
-    // Wait some time to connect to wifi
-    for (int i = 0; i < 10 && WiFi.status() != WL_CONNECTED; i++)
-    {
-        Serial.print(".");
-        delay(1000);
-    }
-
-    if (WiFi.status() != WL_CONNECTED)
-    {
-        Serial.println("Failed to connect to wifi");
-        return;
-    }
-    else
-    {
-        Serial.println("Connected to wifi");
-    }
+    ConectaWebSocket();
 }
