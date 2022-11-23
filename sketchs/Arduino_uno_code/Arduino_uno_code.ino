@@ -1,6 +1,7 @@
 #include "Arduino.h"
 #include <SoftwareSerial.h>
 #include "SensoresManager.h"
+#include <SocketManager.h>
 
 unsigned long previousMillis = 0;
 unsigned long currentMillis = 0;
@@ -19,21 +20,33 @@ void setup()
     ; // wait for serial port to connect. Needed for native USB port only
   }
   Serial.println("Connected to Serial");
-  espSerial.begin(115200);
+  ConfiguraSocketManager();
   ConfigurarSensoresManager();
 }
 
 void loop()
 {
   int status_code = 200;
+  String status_message = "";
   float temperatura = 0;
   float umidade = 0;
-  LerSensorTemp(&status_code, &temperatura, &umidade);
-  espSerial.println("{\"status_code\": " + String(status_code) + ", \"id_sensor\": " + String(01) +  ", \"temperatura\": " + String(temperatura) + ", \"umidade\": " + String(umidade) + "}");
-  Serial.println("{\"status_code\": " + String(status_code) + ", \"id_sensor\": " + String(01) +  ", \"temperatura\": " + String(temperatura) + ", \"umidade\": " + String(umidade) + "}");
-  delay(1000);
-  int estado = 0;
-  LerSensorPir(&status_code, &estado);
-  espSerial.println("{\"status_code\": " + String(status_code) + ", \"id_sensor\": " + String(02) + ", \"estado\": " + String(estado) + "}");
-  Serial.println("{\"status_code\": " + String(status_code) + ", \"id_sensor\": " + String(02) + ", \"estado\": " + String(estado) + "}");
+  // String dados = "";
+  // LerSensorTemp(&status_code, &temperatura, &umidade);
+  // dados = "{\"status_code\": " + String(status_code) + ", \"id_sensor\": " + String(01) + ", \"temperatura\": " + String(temperatura) + ", \"umidade\": " + String(umidade) + "}";
+  // int inputVal = analogRead (A0);
+  // Serial.println(inputVal);
+  // Serial.println(dados);
+  // wsClient.send(dados);
+  // delay(1000);
+  // int estado = 0;
+  // LerSensorPir(&status_code, &estado);
+  // dados = "{\"status_code\": " + String(status_code) + ", \"id_sensor\": " + String(02) + ", \"estado\": " + String(estado) + "}";
+  // Serial.println(dados);
+  // wsClient.send(dados);
+  readSensor(0, &status_code, &status_message);
+  Serial.println(status_message);
+  wsClient.send(status_message);
+  readSensor(1, &status_code, &status_message);
+  Serial.println(status_message);
+  wsClient.send(status_message);
 }

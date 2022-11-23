@@ -6,6 +6,7 @@
 #include <string.h>
 #include <ESP8266WiFi.h>
 #include <ArduinoWebsockets.h>
+#include <lwip/netdb.h>
 // #include <ArduinoHandler.h>
 
 using namespace websockets;
@@ -14,11 +15,12 @@ using namespace websockets;
 extern WebsocketsClient wsClient;
 extern const char *ssid;
 extern const char *password;
-extern const char *websockets_server;
+extern String websockets_server;
 
 // Tratamento de eventos dos dados que vêm do cliente
 void onMessageCallback(WebsocketsMessage message);
 void onEventsCallback(WebsocketsEvent event, String data);
 void ConfiguraSocketManager();
+void ConectaSocketManager();
 
 #endif

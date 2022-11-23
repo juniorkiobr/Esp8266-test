@@ -6,8 +6,8 @@ const sensorsController = require("./controllers/sensorsController");
 const server = http.createServer();
 const wss = new ws.WebSocketServer({ server });
 
-server.listen(3000, () => {
-  console.log('Server listening on port 3000');
+server.listen(2053, () => {
+  console.log('Server listening on port 2053');
 });
 
 wss.on('connection', function connection(ws) {
@@ -26,16 +26,20 @@ wss.on('connection', function connection(ws) {
           message = "Presença: " + (parsedData.estado == 1 ? "Detectada" : "Não detectada");
 
         }
-        console.log(parsedData)
 
         try{
-          Sensor.update({valor: message }, {where: {id: parsedData.id_sensor}});
+          if(parsedData.id_sensor != undefined){
+            Sensor.update({valor: message }, {where: {id: parsedData.id_sensor}});
+
+          }
         }catch(err){
-          console.log(err);
+          console.log(parsedData)
+
         }
       }
     } catch (e) {
-      console.log(e);
+      console.log("" + data)
+
     }
     // wss.clients.forEach(function each(client) {
     //   if (client.readyState === ws.OPEN && client !== ws) {

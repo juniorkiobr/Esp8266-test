@@ -3,7 +3,37 @@
 WebsocketsClient wsClient;
 const char *ssid = "Lilith-2G";
 const char *password = "23201709";
-const char *websockets_server = "ws://192.168.100.132:3000/";
+
+// const char *ssid = "Dafy";
+// const char *password = "12123434";
+String websockets_server = "ws://192.168.100.132:2053/";
+// const char *websockets_server = "ws://179.104.55.71:2053/";
+// String websockets_server = "ws://192.168.43.43:2053/";
+
+// void getIpFromHostname(const char *hostname, char &ip)
+// {
+//     struct hostent *he;
+//     struct in_addr **addr_list;
+//     int i;
+
+//     if ((he = lwip_gethostbyname(hostname)) == NULL)
+//     {
+//         // get the host info
+//         Serial.println("Failed to resolve hostname");
+//         return;
+//     }
+
+//     addr_list = (struct in_addr **)he->h_addr_list;
+
+//     for (i = 0; addr_list[i] != NULL; i++)
+//     {
+//         // Return the first one;
+//         strcpy(ip, inet_ntoa(*addr_list[i]));
+//         return;
+//     }
+
+//     return;
+// }
 
 bool insensitiveCompare(const String &a, const String &b)
 {
@@ -71,6 +101,31 @@ void ConfiguraSocketManager()
     Serial.begin(115200);
     delay(10);
 
+    // char *ipHost = "";
+    // getIpFromHostname("marcelogonzaga.dev.br", *ipHost);
+    // websockets_server = ("ws://" + String(ipHost) + ":2053/");
+
+    ConectaSocketManager();
+
+    // Setup Callbacks
+    wsClient.onMessage(onMessageCallback);
+    wsClient.onEvent(onEventsCallback);
+
+    // Connect to server
+    while (!wsClient.connect(websockets_server))
+    {
+        Serial.println("Connection Failed! " + String(websockets_server) + " Retrying...");
+        delay(1000);
+    }
+
+    // Send a message
+    wsClient.send("Hi Server!");
+    // Send a ping
+    wsClient.ping();
+}
+
+void ConectaSocketManager()
+{
     // Connect to wifi
     WiFi.begin(ssid, password);
 
@@ -81,15 +136,14 @@ void ConfiguraSocketManager()
         delay(1000);
     }
 
-    // Setup Callbacks
-    wsClient.onMessage(onMessageCallback);
-    wsClient.onEvent(onEventsCallback);
-
-    // Connect to server
-    wsClient.connect(websockets_server);
-
-    // Send a message
-    wsClient.send("Hi Server!");
-    // Send a ping
-    wsClient.ping();
+    if (WiFi.status() != WL_CONNECTED)
+    {
+        Serial.println("Failed to connect to wifi");
+        return;
+    }
+    else
+    {
+        Serial.println("Connected to wifi");
+        wsClient.poll();
+    }
 }

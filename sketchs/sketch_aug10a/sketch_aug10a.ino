@@ -7,7 +7,6 @@ void setup()
 
 void loop()
 {
-    wsClient.poll();
     if (Serial.available())
     {
         String dados = Serial.readStringUntil('\n');
