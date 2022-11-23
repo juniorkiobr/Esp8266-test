@@ -35,7 +35,7 @@ app.get("/sensors/getAll", async (req, res) =>{
     res.send(sensors);
 });
 
-app.get("/sensors/readSensor", async (req, res) =>{
+app.post("/sensors/readSensor", async (req, res) =>{
 
     if(WebSocketServer.sendToArduino("cmd_ard_uno:>readSensor:" + req.body.id, true)    ){
         console.log(req.body);
