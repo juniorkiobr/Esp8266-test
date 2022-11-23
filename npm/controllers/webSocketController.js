@@ -48,6 +48,7 @@ var arduinoOnMessage = function(data){
           let message = ""
   
           if(parsedData.id_sensor){
+            console.log("Sensor: " + parsedData.id_sensor + " - " + parsedData.value);
             if(parsedData.id_sensor == "1"){
               message = "Temperatura: " + parsedData.temperatura;
               message += " - Umidade: " + parsedData.umidade;
