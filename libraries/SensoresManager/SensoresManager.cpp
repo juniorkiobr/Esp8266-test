@@ -57,7 +57,7 @@ void writeInteracao(int id_interacao, int value, int *status_code, String *statu
     digitalWrite(interacoes[id_interacao].pin, value);
     *status_code = 200;
 
-    formatReturn(*status_code, (id_interacao + 1), ", value: " + String(value), status_message);
+    formatReturn(*status_code, (id_interacao + 1), ", \"value\": " + String(value), status_message);
     status_message->replace("id_sensor", "id_interacao");
 }
 

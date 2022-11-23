@@ -1,20 +1,16 @@
-const express = require('express');
-const app = express();
+const app = require('../controllers/mainController');
+// import { app } from '../controllers/mainController';
 const Sensor = require('../models/sensors');
 
-app.use(express.json());
-app.use(express.urlencoded({ extended: true }));
 
-app.get("/", async (req, res) => {
-    res.send("Página inicial - Celke");
-});
 
-app.get("/getAll", async (req, res) =>{
+
+app.get("/sensors/getAll", async (req, res) =>{
     const sensors = await Sensor.findAll();
     res.send(sensors);
 });
 
-app.put("/criarAmbiente", async (req, res) => {
+app.put("/sensors/criarAmbiente", async (req, res) => {
     console.log(req.body);
 
     await Sensor.create(req.body)
@@ -31,8 +27,4 @@ app.put("/criarAmbiente", async (req, res) => {
     });
 
     //res.send("Página cadastrar");
-});
-
-app.listen(2052, () => {
-    console.log("Servidor iniciado na porta 2052: http://localhost:2052");
 });

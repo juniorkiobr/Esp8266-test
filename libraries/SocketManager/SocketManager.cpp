@@ -163,7 +163,7 @@ void ConfiguraSocketManager()
     }
 
     // Send a message
-    wsClient.send("Hi Server!");
+    wsClient.send("ArduinoInteractionsToken123456789");
     // Send a ping
     wsClient.ping();
 }
