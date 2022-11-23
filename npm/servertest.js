@@ -34,11 +34,17 @@ wss.on('connection', function connection(ws) {
           }
         }catch(err){
           console.log(parsedData)
+          
 
         }
       }
     } catch (e) {
       console.log("" + data)
+      wss.clients.forEach(function each(client) {
+        if (client.readyState === ws.OPEN && client !== ws) {
+          client.send("" + data);
+        }
+      });
 
     }
     // wss.clients.forEach(function each(client) {

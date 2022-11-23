@@ -1,5 +1,6 @@
 {
   "files.associations": {
+    ".luacheckrc": "lua",
     "sstream": "cpp",
     "string": "cpp",
     "array": "cpp",
@@ -54,6 +55,7 @@
     "stdexcept": "cpp",
     "streambuf": "cpp",
     "cinttypes": "cpp",
-    "typeinfo": "cpp"
+    "typeinfo": "cpp",
+    "thread": "cpp"
   }
 }

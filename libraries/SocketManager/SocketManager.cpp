@@ -3,6 +3,7 @@
 WebsocketsClient wsClient;
 const char *ssid = "Lilith-2G";
 const char *password = "23201709";
+bool hasConnectedWS = false;
 
 // const char *ssid = "Dafy";
 // const char *password = "12123434";
@@ -47,31 +48,72 @@ bool insensitiveCompare(const String &a, const String &b)
     return true;
 }
 
-bool isSubString(const String &a, const String &b)
+// bool isSubString(const String &a, const String &b)
+// {
+//     if (a.length() > b.length())
+//         return false;
+//     for (int i = 0; i < b.length(); i++)
+//     {
+//         if (tolower(a[i]) != = tolower(b[i]))
+//             return false;
+//     }
+//     return true;
+// }
+int isSubString(const String &a, const String &b)
 {
     if (a.length() > b.length())
-        return false;
+        return -2;
     for (int i = 0; i < b.length(); i++)
     {
         if (tolower(a[i]) != tolower(b[i]))
-            return false;
+            return -1;
     }
-    return true;
+    return 0;
+}
+
+void callCommand(String command)
+{
+    if (strstr(command.c_str(), "readSensor:") != NULL)
+    {
+        command = command.substring(12);
+        int id_sensor = command.toInt();
+        int status_code;
+        String status_message;
+        readSensor(id_sensor, &status_code, &status_message);
+        Serial.println(status_message);
+        wsClient.send(status_message);
+    }
+    if (strstr(command.c_str(), "writeInteraction:") != NULL)
+    {
+        command = command.substring(18);
+        int status_code;
+        String status_message;
+
+        int id_interacao = command.substring(0, command.indexOf(";")).toInt();
+        int value = command.substring(command.indexOf(";") + 1).toInt();
+        writeInteracao(id_interacao, value, &status_code, &status_message);
+        Serial.println(status_message);
+        wsClient.send(status_message);
+    }
 }
 
 void onMessageCallback(WebsocketsMessage message)
 {
-    String dados = (message.data());
+    String dados = message.data();
     Serial.print("Got Message: ");
     Serial.println(dados);
-    if (insensitiveCompare(dados, "ping"))
+    // Serial.println(isSubString("cmd_ard_uno:>", dados));
+    // Serial.println(strstr(dados.c_str(), "cmd_ard_uno:>") != NULL);
+
+    if (insensitiveCompare("ping", dados))
     {
         wsClient.send("pong");
     }
-    else if (isSubString(dados, "cmd_ard_uno:>"))
+    else if (strstr(dados.c_str(), "cmd_ard_uno:>") != NULL)
     {
-        dados.replace("cmd_ard_uno:>", "");
-        // EnviaDadosArduinoHandler(dados);
+        dados = dados.substring(12);
+        // Serial.println(dados);
+        callCommand(dados);
     }
 }
 
@@ -80,10 +122,12 @@ void onEventsCallback(WebsocketsEvent event, String data)
     if (event == WebsocketsEvent::ConnectionOpened)
     {
         Serial.println("Connnection Opened");
+        hasConnectedWS = true;
     }
     else if (event == WebsocketsEvent::ConnectionClosed)
     {
         Serial.println("Connnection Closed");
+        hasConnectedWS = false;
     }
     else if (event == WebsocketsEvent::GotPing)
     {
@@ -144,6 +188,5 @@ void ConectaSocketManager()
     else
     {
         Serial.println("Connected to wifi");
-        wsClient.poll();
     }
 }

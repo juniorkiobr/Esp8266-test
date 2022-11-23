@@ -3,10 +3,13 @@
 #define _SOCKETMANAGER_H_
 
 #include <iostream>
+#include <bits/stdc++.h>
 #include <string.h>
 #include <ESP8266WiFi.h>
 #include <ArduinoWebsockets.h>
 #include <lwip/netdb.h>
+#include "SensoresManager.h"
+
 // #include <ArduinoHandler.h>
 
 using namespace websockets;
@@ -15,6 +18,7 @@ using namespace websockets;
 extern WebsocketsClient wsClient;
 extern const char *ssid;
 extern const char *password;
+extern bool hasConnectedWS;
 extern String websockets_server;
 
 // Tratamento de eventos dos dados que vêm do cliente

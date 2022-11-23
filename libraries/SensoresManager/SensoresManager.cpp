@@ -4,17 +4,17 @@
 // #define DHTPIN D2
 // #define DHTTYPE DHT11
 
-struct sensorInfo
-{
-    int pin;
-    String name_sensor;
-    int type;
-    int default_value;
-};
-
 sensorInfo sensors[] = {
     {D2, "temperatura", DHT11, 0},
     {D3, "presenca", 0, LOW},
+};
+
+interactInfo interacoes[] = {
+    {D4, "led", LOW},
+    {D5, "led", LOW},
+    {D6, "led", LOW},
+    {D7, "led", LOW},
+
 };
 
 // PIR Config
@@ -22,9 +22,9 @@ sensorInfo sensors[] = {
 // int state = LOW;
 // int val = 0;
 
-void setup()
+void setupSensores()
 {
-    for (int i = 0; i < sensors.size(); i++)
+    for (int i = 0; i < (*(&sensors + 1) - sensors); i++)
     {
         if (sensors[i].name_sensor == "temperatura")
         {
@@ -35,14 +35,30 @@ void setup()
         {
             pinMode(sensors[i].pin, INPUT);
         }
+    }
+}
 
-        pinMode(sensors[i].pin, INPUT);
+void setupInteracoes()
+{
+    for (int i = 0; i < (*(&interacoes + 1) - interacoes); i++)
+    {
+        pinMode(interacoes[i].pin, OUTPUT);
+        digitalWrite(interacoes[i].pin, interacoes[i].default_value);
     }
 }
 
 void formatReturn(int status_code, int id_sensor, String value, String *return_value)
 {
     *return_value = "{\"status_code\": " + String(status_code) + ", \"id_sensor\": " + String(id_sensor) + String(value) + "}";
+}
+
+void writeInteracao(int id_interacao, int value, int *status_code, String *status_message)
+{
+    digitalWrite(interacoes[id_interacao].pin, value);
+    *status_code = 200;
+
+    formatReturn(*status_code, (id_interacao + 1), ", value: " + String(value), status_message);
+    status_message->replace("id_sensor", "id_interacao");
 }
 
 void readSensor(int id_sensor, int *status_code, String *status_message)
@@ -79,6 +95,7 @@ void readSensor(int id_sensor, int *status_code, String *status_message)
 
 void ConfigurarSensoresManager()
 {
-    setup();
+    setupSensores();
+    setupInteracoes();
     Serial.println("Configurando SensoresManager");
 }

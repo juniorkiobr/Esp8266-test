@@ -26,10 +26,10 @@ void setup()
 
 void loop()
 {
-  int status_code = 200;
-  String status_message = "";
-  float temperatura = 0;
-  float umidade = 0;
+  if(hasConnectedWS){
+    wsClient.poll();
+  }
+
   // String dados = "";
   // LerSensorTemp(&status_code, &temperatura, &umidade);
   // dados = "{\"status_code\": " + String(status_code) + ", \"id_sensor\": " + String(01) + ", \"temperatura\": " + String(temperatura) + ", \"umidade\": " + String(umidade) + "}";
@@ -43,10 +43,4 @@ void loop()
   // dados = "{\"status_code\": " + String(status_code) + ", \"id_sensor\": " + String(02) + ", \"estado\": " + String(estado) + "}";
   // Serial.println(dados);
   // wsClient.send(dados);
-  readSensor(0, &status_code, &status_message);
-  Serial.println(status_message);
-  wsClient.send(status_message);
-  readSensor(1, &status_code, &status_message);
-  Serial.println(status_message);
-  wsClient.send(status_message);
 }
