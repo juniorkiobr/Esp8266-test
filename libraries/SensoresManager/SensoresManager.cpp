@@ -5,7 +5,7 @@
 // #define DHTTYPE DHT11
 
 sensorInfo sensors[] = {
-    {D2, "temperatura", DHT11, 0},
+    {D1, "temperatura", DHT11, HIGH},
     {D3, "presenca", 0, LOW},
 };
 
@@ -28,8 +28,8 @@ void setupSensores()
     {
         if (sensors[i].name_sensor == "temperatura")
         {
-            DHT dht(sensors[i].pin, sensors[i].type);
-            dht.begin();
+            // DHT dht(sensors[i].pin, sensors[i].type);
+            // dht.begin();
         }
         else
         {

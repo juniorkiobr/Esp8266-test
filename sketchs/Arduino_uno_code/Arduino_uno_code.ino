@@ -15,18 +15,19 @@ void setup()
 {
   // put your setup code here, to run once:
   Serial.begin(9600);
-  while (!Serial)
-  {
-    ; // wait for serial port to connect. Needed for native USB port only
-  }
-  Serial.println("Connected to Serial");
+  // while (!Serial)
+  // {
+  //   ; // wait for serial port to connect. Needed for native USB port only
+  // }
+  // Serial.println("Connected to Serial");
   ConfiguraSocketManager();
   ConfigurarSensoresManager();
 }
 
 void loop()
 {
-  if(hasConnectedWS){
+  if (hasConnectedWS)
+  {
     wsClient.poll();
   }
 
