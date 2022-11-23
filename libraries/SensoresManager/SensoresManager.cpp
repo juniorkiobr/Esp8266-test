@@ -79,7 +79,7 @@ void readSensor(int id_sensor, int *status_code, String *status_message)
         else
         {
             *status_code = 200;
-            formatReturn(*status_code, (id_sensor + 1), ", temperatura: " + String(t) + ", umidade: " + String(h), status_message);
+            formatReturn(*status_code, (id_sensor + 1), ", \"temperatura\": " + String(t) + ", \"umidade\": " + String(h), status_message);
 
             // *status_message = "{\"status_code\": " + String(*status_code) + \", id_sensor\": " + String(id_sensor) + ", \"temperatura\": " + String(t) + ", \"umidade\": " + String(h);
         }
@@ -88,7 +88,7 @@ void readSensor(int id_sensor, int *status_code, String *status_message)
     {
         int val = digitalRead(sensors[id_sensor].pin);
         *status_code = 200;
-        formatReturn(*status_code, (id_sensor + 1), ", estado: " + String(val), status_message);
+        formatReturn(*status_code, (id_sensor + 1), ", \"estado\": " + String(val), status_message);
         // *status_message = ", id_sensor\": " + String(id_sensor) + ", \"estado\": " + String(val);
     }
 }

@@ -46,10 +46,8 @@ var arduinoOnMessage = function(data){
         const parsedData = JSON.parse(""+data);
         if(parsedData.status_code === 200){
           let message = ""
-          console.log(parsedData);
   
           if(parsedData.id_sensor){
-            console.log("Sensor: " + parsedData.id_sensor + " - " + parsedData.value);
             if(parsedData.id_sensor == "1"){
               message = "Temperatura: " + parsedData.temperatura;
               message += " - Umidade: " + parsedData.umidade;
@@ -58,6 +56,8 @@ var arduinoOnMessage = function(data){
               message = "Presença: " + (parsedData.estado == 1 ? "Detectada" : "Não detectada");
     
             }
+            console.log("Sensor: " + parsedData.id_sensor + " - " + message);
+
             Sensor.update({valor: message }, {where: {id: parsedData.id_sensor}});
   
           } else if(parsedData.id_interacao){

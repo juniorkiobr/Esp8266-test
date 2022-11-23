@@ -9,7 +9,12 @@ var bodyInterval = null;
 
 var waitArduinoResponse = function(){
     if(WebSocketServer.getWaitArduinoResponse()){ return; }
-    bodyInterval.response_arduino = WebSocketServer.getLastArduinoMessage()
+    try{
+        bodyInterval.response_arduino = JSON.parse(WebSocketServer.getLastArduinoMessage());
+
+    }catch(e){
+        bodyInterval.response_arduino = WebSocketServer.getLastArduinoMessage();
+    }
     resInterval.send(JSON.stringify(bodyInterval));
     clearInterval(waitInterval);
     resInterval = null;
