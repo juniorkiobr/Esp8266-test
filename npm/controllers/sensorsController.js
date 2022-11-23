@@ -35,22 +35,6 @@ app.get("/sensors/getAll", async (req, res) =>{
     res.send(sensors);
 });
 
-app.post("/interactions/writeInteraction", async (req, res) =>{
-    if(WebSocketServer.sendToArduino("cmd_ard_uno:>writeInteraction:" + req.body.id + ";" + req.body.value)    ){
-        console.log(req.body);
-        // await Interaction.update({valor: req.body.value }, {where: {id: req.body.id}});
-        let body = {
-            id: req.body.id,
-            value: req.body.value,
-            message: "Interacao atualizada com sucesso",            
-        }
-        delayArduinoResponse(res, body);
-    }else{
-        delayArduinoResponse(res, {message: "Erro: Arduino não conectado!"});
-    }
-
-});
-
 app.get("/sensors/readSensor", async (req, res) =>{
 
     if(WebSocketServer.sendToArduino("cmd_ard_uno:>readSensor:" + req.body.id)    ){
