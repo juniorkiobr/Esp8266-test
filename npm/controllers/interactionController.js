@@ -34,7 +34,7 @@ app.get("/interactions/getAll", async (req, res) =>{
 });
 
 app.post("/interactions/writeInteraction", async (req, res) =>{
-    if(WebSocketServer.sendToArduino("cmd_ard_uno:>writeInteraction:" + req.body.id + ";" + req.body.value)    ){
+    if(WebSocketServer.sendToArduino("cmd_ard_uno:>writeInteraction:" + req.body.id + ";" + req.body.value, true)    ){
         console.log(req.body);
         // await Interaction.update({valor: req.body.value }, {where: {id: req.body.id}});
         let body = {

@@ -26,7 +26,7 @@ function programSchedule(automation){
         // let id_schedule = schedules.length + 1;
         console.log("callbackSchedule");
         // console.log('running a task every minute');
-        if(WebSocketServer.sendToArduino("cmd_ard_uno:>writeInteraction:" + automation.idInteraction + ";" + automation.value)    ){
+        if(WebSocketServer.sendToArduino("cmd_ard_uno:>writeInteraction:" + automation.idInteraction + ";" + automation.value, true)    ){
             console.log("Interacao programada enviada para o arduino");
         }else{
             console.log("Erro: Arduino não conectado!");

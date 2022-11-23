@@ -37,7 +37,7 @@ app.get("/sensors/getAll", async (req, res) =>{
 
 app.get("/sensors/readSensor", async (req, res) =>{
 
-    if(WebSocketServer.sendToArduino("cmd_ard_uno:>readSensor:" + req.body.id)    ){
+    if(WebSocketServer.sendToArduino("cmd_ard_uno:>readSensor:" + req.body.id, true)    ){
         console.log(req.body);
         // await Interaction.update({valor: req.body.value }, {where: {id: req.body.id}});
         let body = {
