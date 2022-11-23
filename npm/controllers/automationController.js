@@ -2,6 +2,7 @@ const app = require('../controllers/mainController');
 const WebSocketServer =  require("../controllers/webSocketController");
 const Automation = require('../models/automations');
 var cron = require('node-cron');
+var moment = require('moment');
 
 var schedules = [];
 
@@ -50,7 +51,7 @@ function programAutomations(){
 
 app.put("/automations/criarAutomacao", async (req, res) => {
     console.log(req.body);
-    req.body.dateAutomation = DateTime.fromISO(req.body.dateAutomation, {zone: 'utc'}).toJSDate();
+    req.body.dateAutomation = new Date(req.body.dateAutomation);
 
     await Automation.create(req.body)
     .then(() => {
